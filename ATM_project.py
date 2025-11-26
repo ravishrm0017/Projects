@@ -1,6 +1,5 @@
 import streamlit as st
 
-st.set_page_config(page_title="Python ATM", layout="centered")
 
 # ---------------- DATABASE ----------------
 persons = ["Ravi", "Amisha", "Shelja"]
@@ -96,3 +95,4 @@ if st.session_state.logged_in:
     atm_menu()
 else:
     login()
+
