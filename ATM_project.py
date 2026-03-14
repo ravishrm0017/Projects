@@ -1,6 +1,5 @@
 import streamlit as st
 
-
 # ---------------- DATABASE ----------------
 persons = ["Ravi", "Goutam", "Raman"]
 account_numbers = [6576, 2017, 8052]
@@ -14,80 +13,111 @@ if "logged_in" not in st.session_state:
 if "index" not in st.session_state:
     st.session_state.index = None
 
+
 # ---------------- LOGIN PAGE ----------------
 def login():
     st.title("🏧 Python ATM System")
 
-    account = st.text_input("Enter Account Number") #, min_value=1, step=1
-
-    pin = st.text_input("Enter PIN", type="password") #, min_value=0000, max_value=9999, step=1
+    account = st.text_input("Enter Account Number")
+    pin = st.text_input("Enter PIN", type="password")
 
     if st.button("Login"):
-        if account in account_numbers:
-            idx = account_numbers.index(account)
 
-            if pin == pins[idx]:
-                st.session_state.logged_in = True
-                st.session_state.index = idx
-                st.success(f"Login Successful 🎉 Welcome {persons[idx]}")
+        if account.isdigit() and pin.isdigit():
+
+            account = int(account)
+            pin = int(pin)
+
+            if account in account_numbers:
+
+                idx = account_numbers.index(account)
+
+                if pin == pins[idx]:
+
+                    st.session_state.logged_in = True
+                    st.session_state.index = idx
+
+                    st.success(f"Login Successful 🎉 Welcome {persons[idx]}")
+                    st.rerun()
+
+                else:
+                    st.error("❌ Incorrect PIN!")
+
             else:
-                st.error("❌ Incorrect PIN!")
+                st.error("❌ Account Number Not Found!")
+
         else:
-            st.error("❌ Account Number Not Found!")
+            st.error("❌ Enter valid numeric values")
 
 
 # ---------------- ATM MENU ----------------
 def atm_menu():
+
     idx = st.session_state.index
     st.subheader(f"Hello, {persons[idx]} 😊")
 
     option = st.selectbox(
-        "\nSelect an operation:",
+        "Select an operation:",
         ("Check Balance", "Withdraw", "Deposit", "Change PIN", "Exit")
     )
 
-    # Match Case Logic
     match option:
 
         case "Check Balance":
             st.info(f"💰 Current Balance: ₹{balances[idx]}")
 
         case "Withdraw":
-            amount = st.number_input("Enter Withdrawal Amount") #, min_value=1, step=100
+            amount = st.number_input("Enter Withdrawal Amount", min_value=1)
 
             if st.button("Withdraw"):
                 if amount <= balances[idx]:
+
                     balances[idx] -= amount
                     st.success(f"₹{amount} Withdrawn Successfully ✔")
                     st.info(f"New Balance: ₹{balances[idx]}")
+
                 else:
                     st.error("❌ Insufficient Balance!")
 
         case "Deposit":
-            amount = st.number_input("Enter Deposit Amount (100 - 10000)") #, step=100
+            amount = st.number_input("Enter Deposit Amount (100 - 10000)", min_value=1)
 
             if st.button("Deposit"):
+
                 if 100 <= amount <= 10000:
+
                     balances[idx] += amount
                     st.success(f"₹{amount} Deposited Successfully ✔")
                     st.info(f"New Balance: ₹{balances[idx]}")
+
                 else:
                     st.error("❌ Invalid Deposit Amount!")
 
         case "Change PIN":
-            new_pin = st.number_input("Enter New PIN") #, min_value=0000, max_value=9999, step=1
-            confirm_pin = st.number_input("Confirm New PIN")  #, min_value=0000, max_value=9999, step=1
+
+            new_pin = st.text_input("Enter New PIN", type="password")
+            confirm_pin = st.text_input("Confirm New PIN", type="password")
 
             if st.button("Update PIN"):
-                if new_pin == confirm_pin and len(str(int(new_pin))) == 4:
-                    pins[idx] = new_pin
-                    st.success("🔐 PIN Updated Successfully!")
+
+                if new_pin.isdigit() and len(new_pin) == 4:
+
+                    if new_pin == confirm_pin:
+
+                        pins[idx] = int(new_pin)
+                        st.success("🔐 PIN Updated Successfully!")
+
+                    else:
+                        st.error("❌ PIN Mismatch!")
+
                 else:
-                    st.error("❌ PIN Mismatch or Invalid Format!")
+                    st.error("❌ PIN must be 4 digits")
 
         case "Exit":
+
             st.success("🙏 Thank You for Using Python ATM!")
-            st.session_state.logged_in = False  # logout
+            st.session_state.logged_in = False
+            st.rerun()
 
 
 # ---------------- MAIN APP FLOW ----------------
@@ -95,4 +125,3 @@ if st.session_state.logged_in:
     atm_menu()
 else:
     login()
-
