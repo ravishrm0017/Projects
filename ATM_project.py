@@ -18,9 +18,9 @@ if "index" not in st.session_state:
 def login():
     st.title("🏧 Python ATM System")
 
-    account = st.number_input("Enter Account Number") #, min_value=1, step=1
+    account = st.text_input("Enter Account Number") #, min_value=1, step=1
 
-    pin = st.number_input("Enter PIN") #, min_value=0000, max_value=9999, step=1
+    pin = st.text_input("Enter PIN", type="password") #, min_value=0000, max_value=9999, step=1
 
     if st.button("Login"):
         if account in account_numbers:
