@@ -18,9 +18,9 @@ if "index" not in st.session_state:
 def login():
     st.title("🏧 Python ATM System")
 
-    account = st.number_input("Enter Account Number", min_value=1, step=1)
+    account = st.number_input("Enter Account Number") #, min_value=1, step=1
 
-    pin = st.number_input("Enter PIN", min_value=0000, max_value=9999, step=1)
+    pin = st.number_input("Enter PIN") #, min_value=0000, max_value=9999, step=1
 
     if st.button("Login"):
         if account in account_numbers:
@@ -53,7 +53,7 @@ def atm_menu():
             st.info(f"💰 Current Balance: ₹{balances[idx]}")
 
         case "Withdraw":
-            amount = st.number_input("Enter Withdrawal Amount", min_value=1, step=100)
+            amount = st.number_input("Enter Withdrawal Amount") #, min_value=1, step=100
 
             if st.button("Withdraw"):
                 if amount <= balances[idx]:
@@ -64,7 +64,7 @@ def atm_menu():
                     st.error("❌ Insufficient Balance!")
 
         case "Deposit":
-            amount = st.number_input("Enter Deposit Amount (100 - 10000)", step=100)
+            amount = st.number_input("Enter Deposit Amount (100 - 10000)") #, step=100
 
             if st.button("Deposit"):
                 if 100 <= amount <= 10000:
@@ -75,8 +75,8 @@ def atm_menu():
                     st.error("❌ Invalid Deposit Amount!")
 
         case "Change PIN":
-            new_pin = st.number_input("Enter New PIN", min_value=0000, max_value=9999, step=1)
-            confirm_pin = st.number_input("Confirm New PIN", min_value=0000, max_value=9999, step=1)
+            new_pin = st.number_input("Enter New PIN") #, min_value=0000, max_value=9999, step=1
+            confirm_pin = st.number_input("Confirm New PIN")  #, min_value=0000, max_value=9999, step=1
 
             if st.button("Update PIN"):
                 if new_pin == confirm_pin and len(str(int(new_pin))) == 4:
