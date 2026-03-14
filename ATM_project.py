@@ -2,7 +2,7 @@ import streamlit as st
 
 
 # ---------------- DATABASE ----------------
-persons = ["Ravi", "Amisha", "Shelja"]
+persons = ["Ravi", "Goutam", "Raman"]
 account_numbers = [6576, 2017, 8052]
 pins = [8888, 2020, 1717]
 balances = [10000, 20000, 300]
